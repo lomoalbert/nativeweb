@@ -9,29 +9,24 @@ import gtk
 import urllib
 import webkit
 import time
-from django.core.management import execute_from_command_line
-from multiprocessing import Process
+import subprocess
 
 gtk.threads_init()
 
-
+print 'ospid',os.getpid()
 global port
 port="6717"
 
-def djangoserver(argv):
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
-    execute_from_command_line(argv)
+
+server=subprocess.Popen(['python','manage.py','runserver','6717'])
 
 def close(widget):
     print 'event:',widget
-    server.terminate()
+    server.kill()
     gtk.main_quit()
 
-server=Process(target=djangoserver,args=(['browser.py','runserver',port],))
-server.start()
-
 url='http://127.0.0.1:%s/'%port
-win = gtk.Window(gtk.WINDOW_TOPLEVEL)
+win = gtk.Window()
 print win
 win.set_default_size(300,600)
 win.connect("destroy",close)
