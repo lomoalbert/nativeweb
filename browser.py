@@ -9,23 +9,26 @@ import gtk
 import urllib
 import webkit
 import time
-import subprocess
+from multiprocessing import Process
+from paste import httpserver
+from backend.wsgi import application
 
 gtk.threads_init()
 
-print 'ospid',os.getpid()
 global port
 port="6717"
 
 
-server=subprocess.Popen(['python','manage.py','runserver','6717'])
+server=Process(target=httpserver.serve,args=(application, '127.0.0.1', port))
+server.daemon=True
+server.start()
+
 
 def close(widget):
     print 'event:',widget
-    server.kill()
     gtk.main_quit()
 
-url='http://127.0.0.1:%s/'%port
+url='http://127.0.0.1:%s/admin/'%port
 win = gtk.Window()
 print win
 win.set_default_size(300,600)
