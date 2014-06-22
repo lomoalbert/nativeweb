@@ -28,7 +28,7 @@ def close(widget):
     print 'event:',widget
     gtk.main_quit()
 
-url='http://127.0.0.1:%s/admin/'%port
+url='http://127.0.0.1:%s/music/'%port
 win = gtk.Window()
 print win
 win.set_default_size(300,600)
